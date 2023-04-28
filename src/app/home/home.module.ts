@@ -6,6 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
+import { ViewFormModule } from '../viewform/viewform.module';
+import { UpdateFormComponent } from '../update-form/update-form.component';
+import { UpdateFormModule } from '../update-form/update-form.module';
 
 
 @NgModule({
@@ -14,7 +17,8 @@ import { HomePageRoutingModule } from './home-routing.module';
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    MyFormModule
+    ViewFormModule,
+    UpdateFormModule
   ],
   declarations: [HomePage]
 })

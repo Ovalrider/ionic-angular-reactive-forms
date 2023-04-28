@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, FormArray,FormBuilder, Validators } from '@angular/forms';
 import Newspaper from './class/Newspaper';
 import { dateValidator } from './service/dateValidator';
@@ -14,32 +14,44 @@ import { posNumberValidator } from './service/posNumberValidator';
 })
 export class MyFormComponent  implements OnInit {
   newspaper! : Newspaper
+  @Output() addNewspaper: EventEmitter<Newspaper> = new EventEmitter<Newspaper>();
   form_newspaper! : FormGroup
-  alertButtons = ['OK']
-  isAlertOpen =false
   //date_regex = '^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$';
   constructor(private fb : FormBuilder, private alertController : AlertController, private toastController: ToastController) {
     this.form_newspaper = this.fb.group({
       name:['',[Validators.required]],
       number:['',[posNumberValidator()]],
       pub_date:['',[dateValidator()]],
-      page_num:['',[Validators.required]],
-      articles: new FormArray([new FormControl()])
+      page_num:['',[posNumberValidator()]],
+      articles: this.fb.array([])
     })
    }
 
-  ngOnInit() {}
-  
+  ngOnInit() {   
+  }
   addArticle(){
     console.log('Add');
-    (this.form_newspaper.controls['articles']  as FormArray).push(new FormControl());
+    const articles = this.form_newspaper.get('articles');
+    if (articles) {
+      (articles as FormArray).push(new FormControl());
+    }
   }
   deleteArticle(index : number){
     console.log('Delete');
-    (this.form_newspaper.controls['articles']  as FormArray).removeAt(index);
+    const articles = this.form_newspaper.get('articles');
+    if (articles) {
+      (articles as FormArray).removeAt(index);
+    }
   }
   getControls(){
-    return (this.form_newspaper.controls['articles']  as FormArray).controls;
+    const articles = this.form_newspaper.get('articles');
+    if (articles) {
+      return (articles as FormArray).controls;
+    }
+    return [];
+  }
+  get articles(){
+    return this.form_newspaper.get('articles') as FormArray;
   }
   onSubmit(){
     let msg : string = ''
@@ -57,8 +69,11 @@ export class MyFormComponent  implements OnInit {
     }
     else{
       this.newspaper = new Newspaper(this.form_newspaper.value.name,this.form_newspaper.value.number,this.form_newspaper.value.pub_date,this.form_newspaper.value.page_num,this.form_newspaper.value.articles)
-      this.presentToast()
       console.log(this.newspaper)
+      this.presentToast()
+      console.log(this.form_newspaper.controls['articles'].value)
+      console.log(this.newspaper.list_of_articles)
+      this.addNewspaper.emit(this.newspaper)
     }
   }
 
@@ -76,6 +91,7 @@ export class MyFormComponent  implements OnInit {
       message: "Створено газету з назвною " + this.newspaper.name + " номером -" + this.newspaper.number + " датою - " + this.newspaper.publication_date + " кількістю сторінок -" + this.newspaper.number_of_pages + " кількістю статей - " + this.newspaper.list_of_articles.length,
       duration: 5000,
       position: 'bottom',
+      buttons: ['OK']
     });
 
     await toast.present();

@@ -1,0 +1,15 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>
+      <ion-input [value]="newspaper.name" label="Назва газети:" #Input_name></ion-input>
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-input [value]="newspaper.number" label="Номер газети:" #Input_number ></ion-input>
+      <ion-input [value]="newspaper.publication_date" label="Дата публікації:" #Input_pub_date ></ion-input>
+      <ion-input [value]="newspaper.number_of_pages" label="Кількість сторінок:" #Input_page_num ></ion-input>
+  </ion-card-content>
+  <ion-button (click)="saveChange(Input_name.value,Input_number.value,Input_pub_date.value,Input_page_num.value)" expand="block">
+    Зберегти
+  </ion-button>
+</ion-card>

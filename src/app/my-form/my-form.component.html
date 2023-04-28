@@ -19,7 +19,7 @@
       
     </ion-card-content>
   </ion-card>
-  <ion-card>
+  <ion-card formArrayName="articles">
     <ion-card-header>
       <ion-card-title>Статті</ion-card-title>
     </ion-card-header>
@@ -28,8 +28,9 @@
         <ion-icon slot="start" name="add"></ion-icon>
         Додати статтю
       </ion-button>
-      <ion-item *ngFor="let item of getControls(); let i = index">
-        <ion-input type="text" placeholder="Назва статті" formControlName="{{i}}"></ion-input>
+      <ion-item *ngFor="let item of articles.controls; let i = index">
+        <ion-input type="text"  [formControlName]="i" label="Назва статті"></ion-input>
+        
         <ion-button color="danger" (click)="deleteArticle(i)">
           <ion-icon slot="start" name="trash"></ion-icon>
           Видалити статтю
