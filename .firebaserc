@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "lab11-1d386": {
+      "hosting": {
+        "app": [
+          "lab11-1d386"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "lab11-1d386"
+  }
+}

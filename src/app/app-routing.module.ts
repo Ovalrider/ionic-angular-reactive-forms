@@ -11,6 +11,10 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'observable',
+    loadChildren: () => import('./observable/observable.module').then( m => m.ObservablePageModule)
+  },
 ];
 
 @NgModule({
